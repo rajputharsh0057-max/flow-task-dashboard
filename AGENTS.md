@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Keep task data in the browser-backed task provider with localStorage because Flow Task must work without authentication or a remote database.
+- Keep dashboard and task management as separate TanStack routes inside one shared app shell so navigation and page metadata remain distinct.
