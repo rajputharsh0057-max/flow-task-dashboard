@@ -20,7 +20,7 @@ function parseQuickAdd(raw: string): ParsedTask {
   const priorityMatch = text.match(/\b(high|medium|low)\s+priority\b|\burgent\b|\b!(high|medium|low)\b/i);
   if (priorityMatch) {
     const word = (priorityMatch[1] ?? priorityMatch[2] ?? "high").toLowerCase();
-    priority = (word[0].toUpperCase() + word.slice(1)) as Priority;
+    priority = (word.charAt(0).toUpperCase() + word.slice(1)) as Priority;
     text = text.replace(priorityMatch[0], " ");
   }
 
@@ -30,12 +30,12 @@ function parseQuickAdd(raw: string): ParsedTask {
     { re: /\btoday\b|\btonight\b/i, resolve: () => today },
     { re: /\bnext week\b/i, resolve: () => addDays(today, 7) },
     { re: /\bin\s+(\d+)\s+days?\b/i, resolve: m => addDays(today, Number(m[1])) },
-    { re: /\bnext\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => nextDay(today, WEEKDAYS[m[1].toLowerCase()]) },
-    { re: /\bthis\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, WEEKDAYS[m[1].toLowerCase()]); return d < today ? addDays(d, 7) : d; } },
-    { re: /\bon\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, WEEKDAYS[m[1].toLowerCase()]); return d < today ? addDays(d, 7) : d; } },
-    { re: /\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, WEEKDAYS[m[1].toLowerCase()]); return d < today ? addDays(d, 7) : d; } },
-    { re: /\b(\d{4}-\d{2}-\d{2})\b/, resolve: m => { const d = parse(m[1], "yyyy-MM-dd", today); return isValid(d) ? d : null; } },
-    { re: /\b(?:on\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b/i, resolve: m => { const d = parse(`${m[1]} ${m[2]}`, "MMM d", today); if (!isValid(d)) return null; return d < today ? addDays(d, 365) : d; } },
+    { re: /\bnext\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => nextDay(today, weekday(m)) },
+    { re: /\bthis\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, weekday(m)); return d < today ? addDays(d, 7) : d; } },
+    { re: /\bon\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, weekday(m)); return d < today ? addDays(d, 7) : d; } },
+    { re: /\b(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i, resolve: m => { const d = setDay(today, weekday(m)); return d < today ? addDays(d, 7) : d; } },
+    { re: /\b(\d{4}-\d{2}-\d{2})\b/, resolve: m => { const d = parse(m[1] ?? "", "yyyy-MM-dd", today); return isValid(d) ? d : null; } },
+    { re: /\b(?:on\s+)?(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:st|nd|rd|th)?\b/i, resolve: m => { const d = parse(`${m[1] ?? ""} ${m[2] ?? ""}`, "MMM d", today); if (!isValid(d)) return null; return d < today ? addDays(d, 365) : d; } },
   ];
 
   for (const { re, resolve } of datePatterns) {
