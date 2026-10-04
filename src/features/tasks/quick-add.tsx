@@ -10,6 +10,7 @@ type ParsedTask = { title: string; dueDate: string | null; priority: Priority | 
 const WEEKDAYS: Record<string, Day> = {
   sunday: 0, monday: 1, tuesday: 2, wednesday: 3, thursday: 4, friday: 5, saturday: 6,
 };
+const weekday = (m: RegExpMatchArray): Day => WEEKDAYS[(m[1] ?? "").toLowerCase()] ?? 0;
 
 function parseQuickAdd(raw: string): ParsedTask {
   let text = raw.trim();
