@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Outlet, Link, createRootRouteWithContext, useRouter, HeadContent, Scripts, type ErrorComponentProps } from "@tanstack/react-router";
 import { useEffect, useState, type ReactNode } from "react";
-import { CalendarDays, ChevronLeft, ChevronRight, LayoutDashboard, ListTodo, Menu, Moon, Plus, Search, Sun, X } from "lucide-react";
+import { CalendarDays, ChevronLeft, ChevronRight, LayoutDashboard, ListTodo, Menu, Moon, Plus, Search, Sun, Timer, X } from "lucide-react";
 import { format } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { TaskProvider, useTasks } from "@/features/tasks/task-store";
@@ -44,6 +44,7 @@ function AppShell({ children }: { children: ReactNode }) {
       <nav className="space-y-1" aria-label="Main navigation">
         <Link to="/" activeOptions={{ exact: true }} onClick={() => setMobileOpen(false)} className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-sidebar-muted transition-colors hover:bg-sidebar-active hover:text-sidebar-foreground" activeProps={{ className: "bg-sidebar-active text-sidebar-foreground" }} title="Dashboard"><LayoutDashboard className="size-[18px] shrink-0" />{!collapsed && "Dashboard"}</Link>
         <Link to="/tasks" onClick={() => setMobileOpen(false)} className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-sidebar-muted transition-colors hover:bg-sidebar-active hover:text-sidebar-foreground" activeProps={{ className: "bg-sidebar-active text-sidebar-foreground" }} title="My tasks"><ListTodo className="size-[18px] shrink-0" />{!collapsed && <><span className="flex-1">My tasks</span><span className="rounded bg-sidebar-active px-2 py-0.5 text-[11px] text-sidebar-foreground">{tasks.filter(t => !t.completed).length}</span></>}</Link>
+        <Link to="/focus" onClick={() => setMobileOpen(false)} className="flex h-11 items-center gap-3 rounded-md px-3 text-sm font-medium text-sidebar-muted transition-colors hover:bg-sidebar-active hover:text-sidebar-foreground" activeProps={{ className: "bg-sidebar-active text-sidebar-foreground" }} title="Focus mode"><Timer className="size-[18px] shrink-0" />{!collapsed && "Focus mode"}</Link>
       </nav>
       {!collapsed && <><p className="mb-3 mt-10 px-3 text-[10px] font-bold uppercase tracking-[0.16em] text-sidebar-muted">Categories</p><div className="space-y-1 px-3 text-sm text-sidebar-muted">{([["Work", "bg-lilac-foreground"], ["Study", "bg-sky-foreground"], ["Personal", "bg-peach-foreground"]] as const).map(([label, color]) => <div key={label} className="flex h-9 items-center gap-3"><span className={`size-2 rounded-full ${color}`} />{label}<span className="ml-auto text-xs">{tasks.filter(t => t.category === label).length}</span></div>)}</div></>}
     </div>
