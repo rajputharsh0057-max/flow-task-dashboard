@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { addDays, format, parseISO, startOfWeek } from "date-fns";
 import { ArrowRight, ArrowUpRight, Check, CheckCircle2, CircleAlert, Clock3, ListTodo, Plus } from "lucide-react";
@@ -16,6 +16,11 @@ function Dashboard() {
   const { tasks, ready } = useTasks();
   const [editing, setEditing] = useState<Task | null>(null);
   const [newOpen, setNewOpen] = useState(false);
+  const [greeting, setGreeting] = useState("day");
+  useEffect(() => {
+    const hour = new Date().getHours();
+    setGreeting(hour < 12 ? "morning" : hour < 17 ? "afternoon" : "evening");
+  }, []);
   const today = todayKey();
   const todayTasks = tasks.filter(t => t.dueDate === today);
   const upcoming = tasks.filter(t => !t.completed && t.dueDate > today).sort((a,b) => a.dueDate.localeCompare(b.dueDate)).slice(0, 4);
@@ -37,7 +42,7 @@ function Dashboard() {
     { label: "Overdue", value: overdue, icon: CircleAlert, tone: "bg-peach text-peach-foreground", change: overdue ? "Needs your attention" : "All caught up" },
   ];
   return <div className="space-y-8 pb-10">
-    <div className="flex flex-wrap items-end justify-between gap-5"><div><div className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Your workspace / Overview</div><h1 className="font-display text-[28px] font-extrabold leading-tight sm:text-[34px]">Good {new Date().getHours() < 12 ? "morning" : new Date().getHours() < 17 ? "afternoon" : "evening"} <span aria-hidden="true">✳</span></h1><p className="mt-2 text-sm text-muted-foreground">Here’s what’s happening with your tasks today.</p></div><div className="flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-xs font-semibold text-muted-foreground"><span className="size-2 rounded-full bg-mint-foreground" />{format(new Date(), "MMMM d, yyyy")}</div></div>
+    <div className="flex flex-wrap items-end justify-between gap-5"><div><div className="mb-2 text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Your workspace / Overview</div><h1 className="font-display text-[28px] font-extrabold leading-tight sm:text-[34px]">Good {greeting} <span aria-hidden="true">✳</span></h1><p className="mt-2 text-sm text-muted-foreground">Here’s what’s happening with your tasks today.</p></div><div className="flex items-center gap-2 rounded-md border border-border bg-card px-4 py-2.5 text-xs font-semibold text-muted-foreground"><span className="size-2 rounded-full bg-mint-foreground" />{format(new Date(), "MMMM d, yyyy")}</div></div>
     <QuickAdd />
     <div className="grid grid-cols-2 gap-3 sm:gap-4 xl:grid-cols-4">{stats.map(stat => <div key={stat.label} className="rounded-lg border border-border bg-card p-4 transition-transform duration-200 hover:-translate-y-0.5 sm:p-5"><div className={`mb-5 flex size-10 items-center justify-center rounded-md ${stat.tone}`}><stat.icon className="size-[19px]" /></div><p className="text-xs font-medium text-muted-foreground">{stat.label}</p><div className="mt-1 flex items-end justify-between gap-1"><span className="font-display text-[29px] font-extrabold leading-none sm:text-[34px]">{ready ? stat.value : "—"}</span><span className="hidden text-[10px] text-muted-foreground sm:block">{stat.change}</span></div></div>)}</div>
     <div className="grid gap-5 xl:grid-cols-[minmax(0,1.65fr)_minmax(310px,1fr)]">
