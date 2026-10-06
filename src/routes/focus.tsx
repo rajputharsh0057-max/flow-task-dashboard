@@ -36,10 +36,15 @@ function FocusPage() {
   const active = tasks.filter(t => !t.completed);
   useEffect(() => { if (ready && loaded && s.taskId && !task && s.status !== "done") setS(empty); }, [ready, loaded, s.taskId, task, s.status]);
 
-  const start = () => { setNow(Date.now()); setS(v => ({ ...v, status: "running", endAt: Date.now() + v.remaining })); };
+  const start = () => {
+    if (!task || task.completed) return;
+    const startedAt = Date.now();
+    setNow(startedAt);
+    setS(v => ({ ...v, status: "running", endAt: startedAt + v.remaining }));
+  };
   const pause = () => setS(v => ({ ...v, status: "paused", endAt: null, remaining }));
   const end = () => setS(v => ({ ...v, status: "done", endAt: null, remaining, reason: "ended" }));
-  const reset = () => setS(v => ({ ...empty, taskId: v.taskId }));
+  const reset = () => setS({ ...empty, taskId: task && !task.completed ? task.id : null });
   const mm = String(Math.floor(remaining / 60000)).padStart(2, "0");
   const ss = String(Math.floor((remaining % 60000) / 1000)).padStart(2, "0");
   const progress = 1 - remaining / DURATION;
@@ -77,7 +82,7 @@ function FocusPage() {
           <div className="absolute inset-0 flex flex-col items-center justify-center"><span className="font-display text-5xl font-extrabold tabular-nums sm:text-6xl" aria-live="polite">{mm}:{ss}</span><span className="mt-2 flex items-center gap-1.5 text-xs font-semibold text-muted-foreground"><Timer className="size-3.5" />{s.status === "running" ? "Focusing" : s.status === "paused" ? "Paused" : "25 min session"}</span></div>
         </div>
         <div className="mt-8 flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
-          {s.status === "idle" && <Button className="h-11 px-8" disabled={!task} onClick={start}><Play className="size-4" />Start focus</Button>}
+          {s.status === "idle" && <Button className="h-11 px-8" disabled={!task || task.completed} onClick={start}><Play className="size-4" />Start focus</Button>}
           {s.status === "running" && <Button className="h-11 px-8" onClick={pause}><Pause className="size-4" />Pause</Button>}
           {s.status === "paused" && <Button className="h-11 px-8" onClick={start}><Play className="size-4" />Resume</Button>}
           {inSession && <Button variant="outline" className="h-11 px-6" onClick={end}><Square className="size-4" />End session</Button>}
