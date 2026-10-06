@@ -1,88 +1,76 @@
-# Flow Task Dashboard
+# FlowTask
 
-Build a modern responsive productivity web application called Flow Task. The application is designed for students and developers to manage their daily tasks.
+> A modern productivity dashboard for managing tasks, priorities, deadlines, and focused work.
 
-Create a beautiful professional dashboard with:
+FlowTask is a responsive productivity web application designed to help students and developers organize their daily work in one place.
 
-- a sidebar navigation
+## ✨ Features
 
-- a top header
+- 📊 Productivity dashboard with total, completed, pending, and overdue task statistics
+- ✅ Create, edit, delete, complete, and uncomplete tasks
+- 🎯 Task priorities: Low, Medium, High
+- 📅 Due dates and overdue tracking
+- 🏷️ Task categories: Work, Study, Personal
+- 🔎 Search and task filtering
+- 🔥 High-priority and overdue views
+- ⚡ Quick Add using natural-language task descriptions
+- ⏱️ Focus Mode with a 25-minute productivity timer
+- 💾 Local task persistence using browser storage
+- 🌙 Light and dark mode
+- 📱 Responsive desktop and mobile design
+- 🎨 Modern startup-style UI with polished cards, spacing, and interactions
 
-- task statistics
+## 🚀 Quick Add
 
-- today's tasks
+FlowTask allows users to create tasks using natural language.
 
-- upcoming dated lines
+Example:
 
-- a productivity overview
+> Finish DBMS assignment tomorrow, high priority
 
-Use a modern dark and light visual design with excellent spacing, rounded cards, subtle animation, and a premium SASS-style interface. The dashboard should include:
+The task is interpreted and added with the appropriate deadline and priority.
 
-- total tasks
+## ⏱️ Focus Mode
 
-- completed tasks
+Focus Mode provides a dedicated 25-minute focused-work session.
 
-- pending tasks
+Users can:
 
-- overdue tasks
+- Start a focus session
+- Pause and resume the timer
+- End a session
+- Complete the focused task
+- Start another focus round
 
-Create a task management page where users can:
+## 🛠️ Tech Stack
 
-- create tasks
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- shadcn/ui
+- Browser Local Storage
 
-- edit tasks
+## 🎙️ Built With Voice
 
-- delete tasks
+FlowTask was developed using **Wispr Flow** for voice-driven development together with **Lovable**.
 
-- complete tasks
+The project demonstrates how voice-based software development can be used to build, iterate, test, and refine a real productivity application.
 
-- prioritize tasks
+## 📱 Responsive Design
 
-Each task should have:
+FlowTask is designed to work across:
 
-- a title
+- Desktop
+- Tablet
+- Mobile
 
-- a description
+The interface adapts task cards, navigation, filters, forms, and Focus Mode for smaller screens.
 
-- priority
+## 💻 Run Locally
 
-- due date
+Clone the repository:
 
-- category
-
-- completion status
-
-Add filters for:
-
-- all
-
-- active
-
-- completed
-
-- high priority
-
-- overdue
-
-Make the application fully responsive for desktop and mobile. Use realistic sample data initially. Store task data locally so the application works without requiring authentication or an external database. Make the interface polished enough to look like a real startup product rather than a basic student project.
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/d4787f68-8696-42f6-998c-659993c4ad26).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
-
-## Development
-
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
-
-```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
-npm run dev
-```
+```bash
+git clone https://github.com/rajputharsh0057-max/flow-task-dashboard.git
+cd flow-task-dashboard
